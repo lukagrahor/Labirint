@@ -1,0 +1,127 @@
+<html>
+<head>
+	<title>Labirint witcher</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet"href="stil.css">
+</head>
+<body>
+<div id="glavni">
+	<div id="meni">
+		<a href="#" id="gumb1" onclick="zacni()"><span>Zacni</span></a>
+		<a href="#" id="gumb2" onclick="ustavi()"><span>Ustavi</span></a>
+		<a href="#" id="gumb3" onclick="glasba()"><span>Glasba</span></a>
+		<a href="#" id="gumb4" onclick="klik()"><span>Navodila</span></a>
+		<img src="slike/witcher.png" id="logo">
+	</div>
+	<div id="witcher">
+		<img src="slike/zemljevid.png" id="ozadje">
+		<canvas id="labirint" width="485" height="485" class="robovi"></canvas>
+		<script src="skripta.js"></script>
+		<img src="slike/cilj.png" id="cilj">
+		<img src="slike/ikona.png" id="ikona">
+	</div>
+	<div id="spodaj">
+		<p id="podpis">Stran ustvaril: Luka Grahor</p>
+	</div>
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+function klik(){
+	swal('Klikni na gumb zacni, da zaženeš labirint. Ko pride ikona do konca, lahko spet klkineš začni, da znova zaženeš labirint. Ustaviš lahko kadarkoli z gumbom ustavi. Če želiš glasbo klikni na gumb glasba, če jo želiš ustaviti, spet klikni na gumb glasba.');
+}
+</script>
+<script>
+var tab1=[4,26,58,170,200,260,230,260,290,260,230,320,380,350,436,496,464,406,464,406,374,404,316,286,314,258,316,230,170,114,144,174,204,234,264,294,264,234,264,294,324,352,382,352,412,352,472,438,496,614,726,786,846,816,846,816,696,726,696,666,576,606,636,666,756,786,844,860];
+var tab2=[460,286,312,230,258,228,198,168,138,108,78,54,144,174,200,230,260,316,348,376,464,494,552,492,402,342,284,254,344,458,488,518,548,608,548,578,608,636,666,722,752,722,782,812,840,870,900,870,810,840,810,780,810,780,750,720,690,720,750,780,692,662,546,576,606,512,460,490];
+var charm = document.getElementById("ikona");   
+  var x = 460;
+  var y = -12;
+  var id;
+  var i=0;
+  var j=0;
+  var st1=0;
+  var st2=0;
+  var prvicKrog1="ja";
+  var prvicKrog2="ja";
+  var prvic="ja";
+  var stanje="zacni";
+  var enkrat=0;
+  var enkrat2=0;
+  function zacni() {
+	if(enkrat==0){
+		id=setInterval(animiraj, 10);
+		enkrat=1;
+	}
+  }
+  function animiraj(){
+	if(y==tab1[i]){
+		if(tab2[j]<tab2[j-1]||j==0){
+			x-=2;
+		}
+		if(tab2[j]>tab2[j-1]){
+			x+=2;
+		}
+		charm.style.left= x + 'px';
+		st2=0;
+		if(st1==0){
+			j++;
+		}
+		st1++;
+	}
+	if(x==tab2[j]){
+		if(tab1[i]<tab1[i-1]){
+			y-=2
+		}
+		if(tab1[i]>tab1[i-1]||i==0){
+			y+=2;
+		}
+		charm.style.top = y + 'px';
+		st1=0;
+		if(st2==0&&prvic=="ne"){
+			i++;
+		}
+		st2++;
+		prvic="ne";
+	}
+	if (y == 860) {
+      enkrat=0;
+      clearInterval(id);
+	  charm.style.top = -12 + 'px';
+	  charm.style.left = 460 + 'px';
+		x = 460;
+		y = -12;
+		i=0;
+		j=0;
+		st1=0;
+		st2=0;
+		prvicKrog1="ja";
+		prvicKrog2="ja";
+		prvic="ja";
+		stanje="zacni";
+		enkrat2=0
+	}
+  }
+  function pospesi(){
+	id=setInterval(animiraj, 10);
+  }
+  function ustavi(){
+	clearInterval(id);
+	enkrat=0;
+  }
+</script>
+<script>
+var audio=new Audio("glasba.mp3");
+var predvajaj=false;
+	function glasba(){
+		if(predvajaj==false){
+			audio.play();
+			predvajaj=true;
+		}
+		else{
+			audio.pause();
+			predvajaj=false;
+		}
+	}
+</script>
+</body>
+</html>
